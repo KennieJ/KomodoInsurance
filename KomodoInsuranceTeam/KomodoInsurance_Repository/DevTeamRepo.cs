@@ -9,6 +9,7 @@ namespace KomodoInsurance_Repository
     public class DevTeamRepo
     {
         private List<DevTeam> _listOfDevTeams = new List<DevTeam>();
+        private List<Developer> _listOfTeamMembers = new List<Developer>();
 
         //Create
         public void AddTeamToList(DevTeam team)
@@ -16,10 +17,21 @@ namespace KomodoInsurance_Repository
             _listOfDevTeams.Add(team);
         }
 
+        public void AddDeveloperToTeam(Developer person, string teamID)
+        {
+            DevTeam team = GetTeamByID(teamID);
+            team.TeamMembers.Add(person);
+        }
+
         //Read
         public List<DevTeam> GetDevTeams()
         {
             return _listOfDevTeams;
+        }
+
+        public List<Developer> GetTeamMemberList()
+        {
+            return _listOfTeamMembers;
         }
 
         //Update
@@ -56,6 +68,34 @@ namespace KomodoInsurance_Repository
             if(initialCount > _listOfDevTeams.Count)
             {
                 return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool RemoveDevFromTeam(Developer person, string teamID)
+        {
+            DevTeam team = GetTeamByID(teamID);
+            if(team == null)
+            {
+                return false;
+            }
+
+            if (_listOfTeamMembers.Contains(person))
+            {
+                int initialCount = _listOfTeamMembers.Count;
+                _listOfTeamMembers.Remove(person);
+
+                if (initialCount > _listOfTeamMembers.Count)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
